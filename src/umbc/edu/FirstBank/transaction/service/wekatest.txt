@@ -1,0 +1,61 @@
+package edu.umbc.thesis;
+
+import java.util.HashMap;
+import java.util.Random;
+
+import weka.classifiers.Evaluation;
+import weka.classifiers.trees.J48;
+import weka.core.Instances;
+import weka.core.converters.ConverterUtils.DataSource;
+ 
+public class TestWeka {
+	public static void main(String[] args) throws Exception{
+		Experiment tf = new Experiment();
+		DataFiles train= new DataFiles();
+		train.setName("training11.arff");
+		
+		System.out.println("saul");
+		DataSource source = new DataSource(train.getName());
+		Instances training = source.getDataSet();
+		DataSource sourcet = new DataSource("test11.arff");
+		Instances test = sourcet.getDataSet();
+		HashMap<String,Integer>  attributes= new HashMap();
+		attributes.put(training.attribute("L").value(0), (Integer)training.attributeStats(18).nominalCounts[0] );
+		attributes.put(training.attribute("L").value(0), (Integer)training.attributeStats(18).nominalCounts[0] );
+		
+		
+		System.out.println(training.attribute("L").value(0));
+		System.out.println(training.attribute("L").value(1));
+		
+		train.setNumnegatives(training.attributeStats(18).nominalCounts[0]);
+		train.setNumpositives(training.attributeStats(18).nominalCounts[1]);
+		train.setType("training");
+		 // setting class attribute if the data format does not provide this information
+		 // For example, the XRFF format saves the class attribute information as well
+		 if (training.classIndex() == -1)
+		 
+		   training.setClassIndex(training.numAttributes() - 1);
+		 if (test.classIndex() == -1)
+		   test.setClassIndex(test.numAttributes() - 1);       
+		 
+		 J48 tree = new J48();         
+		    
+		 tree.buildClassifier(training);  
+		 Evaluation eval = new Evaluation(training);
+		 eval.evaluateModel(tree, test);
+		 
+		 
+		 System.out.println("saul");
+		 System.out.println("true recall "+eval.recall(0));
+		 System.out.println("false recall "+eval.recall(1));
+		 System.out.println("true precision "+eval.precision(0));
+		 System.out.println("false precision "+eval.precision(1));
+		 System.out.println("roc "+eval.areaUnderROC(0));
+		 
+		 
+		 
+		 
+	}
+}
+
+

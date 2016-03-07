@@ -1,0 +1,19 @@
+J48 j48 = new J48();
+		SMO smo = new SMO();
+		IBk ibk = new IBk();
+		RandomForest randomforest=new RandomForest();
+		classifieri.add(j48);
+		classifieri.add(smo);
+		classifieri.add(ibk);
+		classifieri.add(randomforest);
+		
+		for (Object object : classifieri) {
+			
+			Classifiers  classifierweka= new Classifiers();
+			classifierweka.setClassifiero(object);
+			classifierweka.setName(object.);
+			ServiceDs serviceds= new ServiceDs();
+			
+			object.buildClassifier(serviceds.createDataset(training, test, percentageT, percentageS));  
+			Evaluation eval = new Evaluation(training);
+			eval.evaluateModel(tree, test);
